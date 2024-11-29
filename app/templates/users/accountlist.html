@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}User Accounts{% endblock %}
+
+{% block content %}
+<div class="m-2">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ms-2 pt-2 pb-3">
+        <h4 >API Users</h4>
+    </div>
+
+    <div class="container-fluid border border-1 rounded-1 p-4">
+        <form>
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="filter_username" class="text-muted mb-1">Username</label>
+                    <input type="text" class="form-control" id="filter_username" placeholder="Username">
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="filter_user_type" class="text-muted mb-1">User Type</label>
+                    <select class="form-control" id="filter_user_type">
+                        <option value="">Select Type</option>
+                        <option value="Admin" {% if current_user.type == 'Admin' %} disabled {% endif %}>Admin</option>
+                        <option value="API">API</option>
+                    </select>
+                </div>
+                <!-- <div class="form-group col-lg-4">
+                    <label for="roles">Roles</label>
+                    <input type="text" class="form-control" id="roles" placeholder="Roles">
+                </div> -->
+            </div>
+            <div class="d-flex gap-2 justify-content-end mt-2">
+                <button type="button" class="btn btn-outline-warning col-lg-1" onclick="reset_api_user_filter()">Reset</button>
+                <button type="button" class="btn btn-secondary col-lg-1" onclick="get_api_user_list()">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-2 container-fluid border border-1 rounded-1 p-4">
+        <div class="d-flex justify-content-end mb-2">
+            <a type="submit" class="btn btn-success" href="{{ url_for('shared.create_account') }}"><i class="fa-solid fa-plus"></i> Create</a>
+        </div>
+        <div class="table-responsive small">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">User Type</th>
+                        <th scope="col">Roles</th>
+                        <th scope="col">Created At</th>
+                        <th class="text-end" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_api_user_list">
+                    <!-- table body data will add by js -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const updateUserUrl = "{{ url_for('shared.create_account') }}";
+    </script>
+    <script src="../../static/js/account.js"></script>
+{% endblock %}

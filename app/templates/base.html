@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+
+<head>
+    <script src="../static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>URM- {% block title %}{% endblock %}</title>
+
+    <link href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/select2.min.css" rel="stylesheet" >
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+
+        /* toast modified design start */
+        .tata-title {
+            display: none !important;
+        }
+        .tata-icon {
+            display: none !important;
+        }
+        .tata-body {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            text-align: start;
+            padding: 5px;
+        }
+        /* toast modified design end */
+
+
+        /* select2 design modification start */
+        /* Light mode styles */
+        .select2-container--default .select2-selection--multiple {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            color: #333;
+        }
+
+        .select2-container--default .select2-results__option {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            .select2-container--default .select2-selection--single{
+                background-color: #212529;
+                border: 1px solid #555758;
+                color: #fff;
+            }
+            .select2-container--default .select2-selection--single .select2-selection__rendered{
+                color: #fff;
+            }
+
+            .select2-container--default .select2-selection--multiple {
+                background-color: #212529;
+                border: 1px solid #555758;
+                color: #fff;
+            }
+
+            .select2-container--default .select2-results__option {
+                background-color: #212529;
+                color: #fff;
+            }
+
+            .select2-container--default .select2-results__option--highlighted[aria-selected] {
+                background-color: #212529;
+                color: #fff;
+            }
+            .select2-container--default .select2-selection__rendered .select2-selection__choice{
+                background-color: #313436;
+                border: 1px solid #5e6061;
+                color: #fff;
+            }
+        }
+        /* select2 design modification end */
+
+        /* base layout design start */
+        .sidebar-left {
+            height: 100vh;
+            position: fixed;
+            top: 50px;
+            left: 0;
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            width: 270px;
+        }
+
+        .content-right {
+            margin-left: 270px;
+            height: 100vh;
+        }
+        /* base layout design end */
+
+        /* model auto complete ul design start */
+        #suggestionRoles {
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 2px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        #suggestionUpdateRoles{
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 2px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        /* model auto complete ul design end */
+    </style>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" 
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../static/css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="sticky-top bg-dark d-flex justify-content-between align-items-center shadow-sm px-3" data-bs-theme="dark">
+        <!-- Branding Link (Aligned Left) -->
+        <a class="text-white text-lg fs-4 text-decoration-none p-2" href="{{ url_for('shared.dashboard_view') }}">URM Dashboard</a>
+        
+        <!-- Profile Dropdown (Aligned Right) -->
+        <div class="dropdown">
+            <ul class="dropdown-menu text-small shadow">
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i class="fa-solid fa-key text-sm"></i> Change Password
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{{ url_for('shared.signout_view') }}">
+                        <i class="fa-solid fa-right-from-bracket text-sm"></i> Sign out
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="me-2 d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle p-2 rounded bg-dark" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="../static/images/default-avatar.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>{{ current_user.username }}</strong>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="d-flex">
+        <!-- Sidebar (Fixed Left) -->
+        <div class="sidebar-left bg-body-tertiary border-end min-vh-100 p-0">
+            <div class="offcanvas-md offcanvas-end bg-body-tertiary h-100" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="sidebarMenuLabel">URM Dashboard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body d-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('shared.dashboard_view') %}text-secondary{% endif %}" aria-current="page" href="{{ url_for('shared.dashboard_view') }}">
+                                <i class="fas fa-home text-sm"></i> Dashboard
+                            </a>
+                        </li>
+                    </ul>
+                    <hr class="my-3">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" data-bs-target="#userMenu" aria-expanded="true">
+                                <span><i class="fa-regular fa-user text-sm"></i>&nbsp; User</span>
+                                <i class="bi bi-chevron-down"></i>
+                            </a>
+                            <div class="collapse ps-3 show" id="userMenu">
+                                <ul class="list-unstyled">
+                                    <li><a class="nav-link {% if request.path == url_for('shared.create_account') %}text-secondary{% endif %}" href="{{ url_for('shared.create_account') }}"><i class="fa-solid fa-plus text-sm"></i>&nbsp; Create User</a></li>
+                                    <li><a class="nav-link {% if request.path == url_for('shared.user_list') %}text-secondary{% endif %}" href="{{ url_for('shared.user_list') }}"><i class="fa-solid fa-list text-sm"></i>&nbsp; User List</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('shared.create_roles') %}text-secondary{% endif %}" href="{{ url_for('shared.create_roles') }}">
+                                <i class="fas fa-user-tag text-sm"></i> API Roles
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('shared.api_list') %}text-secondary{% endif %}" href="{{ url_for('shared.api_list') }}">
+                                <i class="fas fa-link text-sm"></i> API's
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="content-right flex-grow-1">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <div id="toast_msg" style="display:none;"></div>
+    <script src="../static/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="../static/js/select2.min.js"></script>
+    <script src="../static/js/global.js"></script>
+    <script src="../static/js/dashboard.js"></script>
+    <script src="../static/js/tata.js"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+
+
+</html>

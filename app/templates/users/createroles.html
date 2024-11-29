@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Create Roles{% endblock %}
+
+{% block content %}
+<div class="m-2">
+
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ms-2 pt-2 pb-3">
+        <h4 >Roles</h4>
+    </div>
+
+    <div class="container-fluid border border-1 rounded-1 p-4">
+        <div class="row my-2">
+            <div class="col-6 p-0">
+                <select class="js-example-basic-single form-control" id="filter_role_name" name="state">
+                    <!-- option will ad by js -->
+                </select>
+            </div>
+
+            <div class="col-6">
+                <input type="text" class="form-control" id="filter_created_by" placeholder="Enter Create By" style="padding: 0.1rem .75rem !important;">
+            </div>
+        </div>
+        <div class="d-flex gap-2 justify-content-end my-2">
+            <button type="submit" class="btn btn-outline-secondary col-lg-1" onclick="reset_role_filter()">Reset</button>
+            <button type="button" class="btn btn-primary col-lg-1" onclick="get_roles_list()">Filter</button>
+        </div>
+    </div>
+
+    <div class="mt-2 container-fluid border border-1 rounded-1 p-4">
+        <div class="d-flex justify-content-end mb-2">
+            <button type="submit" class="btn btn-success" title="Create Role" data-bs-toggle="modal" data-bs-target="#createRoleModal"><i class="fa-solid fa-plus"></i> Create</button>
+        </div>
+
+        <div class="table-responsive small">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Role</th>
+                        <th scope="col">Created By</th>
+                        <th scope="col">Created At</th>
+                        <th class="text-end" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_roles_list">
+                    <!-- table body data will add by js -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Create Role Modal -->
+<div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title fs-6" id="createRoleModalLabel">Create Role Name</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">        
+
+            <div class="form-group mt-2">
+                <label for="api" class="mb-2 text-muted">Role Name</label>
+                <input type="text" class="form-control" id="role_name" placeholder="Enter Role Name">
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-primary" onclick="create_role_name($('#role_name'))"><i class="fa-solid fa-plus text-sm"></i> Create</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const apiListUrl = "{{ url_for('shared.api_list') }}";
+    </script>
+    <script src="../../static/js/roles.js"></script>
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}API's{% endblock %}
+
+{% block content %}
+<div class="m-2">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ms-2 pt-2 pb-3">
+        <h4 >API's</h4>
+    </div>
+
+    <div class="container-fluid border border-1 rounded-1 p-4">
+        <form>
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="filter_api_role" class="text-muted mb-2">Role</label>
+                    <select class="js-example-basic-single form-control" id="filter_api_role" name="state">
+                        <!-- option will ad by js -->
+                    </select>
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="filter_api_type" class="text-muted mb-2">API Type</label>
+                    <select class="form-control" id="filter_api_type" style="padding: 0.1rem .75rem !important;">
+                        <option value="">Select Type</option>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="HEAD">HEAD</option>
+                        <option value="DELETE">DELETE</option>
+                        <option value="PATCH">PATCH</option>
+                        <option value="OPTIONS">OPTIONS</option>
+                        <option value="CONNECT">CONNECT</option>
+                        <option value="TRACE">TRACE</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group mt-3">
+                <label for="filter_api_link" class="text-muted mb-2">API</label>
+                <input type="text" class="form-control" id="filter_api_link" placeholder="API Link">
+            </div>
+
+
+            <div class="d-flex gap-2 justify-content-end my-2">
+                <button type="button" class="btn btn-outline-secondary col-lg-1" onclick="reset_api_filter()">Reset</button>
+                <button type="button" class="btn btn-primary col-lg-1" onclick="get_all_api_list()">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-2 container-fluid border border-1 rounded-1 p-4">
+        <div class="d-flex gap-2 justify-content-end align-items-center mb-2">
+            <a class="btn btn-sm btn-secondary py-2" title="Go back to roles" href="{{ url_for('shared.create_roles') }}"><i class="fas fa-angle-left text-sm"></i> Go Back</a>
+            <button type="button" class="btn btn-success" id="btn_create_api" data-bs-toggle="modal" data-bs-target="#addAPIModal"><i class="fa-solid fa-plus"></i> Create</button>
+        </div>
+        
+        <div class="table-responsive small">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Role</th>
+                        <th scope="col">API</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Created At</th>
+                        <th class="text-end" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody_api_list">
+                    <!-- table body data will add by js -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Create API Modal -->
+<div class="modal fade" id="addAPIModal" tabindex="-1" aria-labelledby="addAPIModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title fs-6" id="addAPIModalLabel">Create API</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="api_role_name" class="mb-2 text-muted">Role</label>
+                <input type="text" class="form-control" value="{{ set_role_name or '' }}" id="api_role_name" placeholder="Role Name">
+                <ul id="suggestionRoles" class="list-group mt-2"></ul>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="api_type" class="mb-2 text-muted">API Type</label>
+                <select class="form-control" id="api_type">
+                    <option value="GET" selected>GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="HEAD">HEAD</option>
+                    <option value="DELETE">DELETE</option>
+                    <option value="PATCH">PATCH</option>
+                    <option value="OPTIONS">OPTIONS</option>
+                    <option value="CONNECT">CONNECT</option>
+                    <option value="TRACE">TRACE</option>
+                </select>
+            </div>
+            <div class="form-group mt-2">
+                <label for="api_link_text" class="mb-2 text-muted">API Link</label>
+                <input type="text" class="form-control" id="api_link_text" placeholder="API">
+            </div>
+            <div class="form-group mt-2">
+                <label for="api_details" class="mb-2 text-muted">Details <span class="text-secondary">(Optional)</span></label>
+                <textarea class="form-control" id="api_details" rows="3" placeholder="Details"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-success" onclick="create_api()"><i class="fas fa-plus text-sm"></i>&nbsp;Create</button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Update API Modal -->
+<div class="modal fade" id="updateAPIModal" tabindex="-1" aria-labelledby="updateAPIModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title fs-6" id="updateAPIModalLabel">Update <span id="up_role"></span> (<span id="up_role_id"></span>) API</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="up_api_role_name" class="mb-2 text-muted">Role</label>
+                <input type="text" class="form-control" value="{{ set_role_name or '' }}" id="up_api_role_name" placeholder="Role Name">
+                <ul id="suggestionUpdateRoles" class="list-group mt-2"></ul>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="update_api_type" class="mb-2 text-muted">API Type</label>
+                <select class="form-control" id="update_api_type">
+                    <option value="GET" selected>GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="HEAD">HEAD</option>
+                    <option value="DELETE">DELETE</option>
+                    <option value="PATCH">PATCH</option>
+                    <option value="OPTIONS">OPTIONS</option>
+                    <option value="CONNECT">CONNECT</option>
+                    <option value="TRACE">TRACE</option>
+                </select>
+            </div>
+            <div class="form-group mt-2">
+                <label for="update_api_link_text" class="mb-2 text-muted">API Link</label>
+                <input type="text" class="form-control" id="update_api_link_text" placeholder="API">
+            </div>
+            <div class="form-group mt-2">
+                <label for="update_api_details" class="mb-2 text-muted">Details <span class="text-secondary">(Optional)</span></label>
+                <textarea class="form-control" id="update_api_details" rows="3" placeholder="Details"></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-success" onclick="updateApiData()"><i class="fa-solid fa-arrow-up"></i>&nbsp;Update</button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- set if url has role name -->
+<span style="display: none;" id="APIRoleName">{{ set_role_name or '' }}</span>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="../../static/js/api_list.js"></script>
+{% endblock %}
