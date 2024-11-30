@@ -1,9 +1,52 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
 content %}
-  <div class="ms-4 my-4">
-    <h3>
-      Hello, <span class="text-warning">{{ current_user.username }}</span>.
-      welcome to User, Role & API Management dashboard.
-    </h3>
+  <div class="m-2">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ms-2 pt-2 pb-3">
+        <h4 >Hello, <span class="text-warning">{{ current_user.username }}</span>.
+          welcome to User, Role & API Management dashboard.</h4>
+    </div>
+
+    <div class="container-fluid">
+      <ul class="list-group">
+        <!-- Create superuser link -->
+        <li class="list-group-item">
+            <strong>1. Create Superuser Link:</strong> 
+            <a href="domain-name/create_superuser" target="_blank" class="text-decoration-none">domain-name/create_superuser</a><br>
+            <strong>Method:</strong> POST<br>
+            <strong>Body:</strong> 
+            <pre>
+              {
+                "username": "example_user_admin",
+                "password": "12345",
+                "type": "Admin"
+              }
+            </pre>
+        </li>
+    
+        <!-- Login API type user link -->
+        <li class="list-group-item">
+            <strong>2. Login (API type user) Link:</strong> 
+            <a href="domain-name/api/login_api_user" target="_blank" class="text-decoration-none">domain-name/api/login_api_user</a><br>
+            <strong>Method:</strong> POST<br>
+            <strong>Body:</strong> 
+            <pre>
+              {
+                "username": "example_user_api",
+                "password": "12345"
+              }
+            </pre>
+        </li>
+    
+        <!-- Get user roles API information -->
+        <li class="list-group-item">
+            <strong>3. Get User Roles API's Information:</strong> 
+            <a href="domain-name/api/users_roles_apis_data" target="_blank" class="text-decoration-none">domain-name/api/users_roles_apis_data</a><br>
+            <strong>Method:</strong> GET<br>
+            <strong>Bearer Token:</strong> token-value
+        </li>
+    </ul>
+    
+    </div>
   </div>
 {% endblock %}
