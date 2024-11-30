@@ -1,8 +1,13 @@
 from datetime import datetime, timezone
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+)
 
 from app import db
 from ..models import Roles, RolesAPI, Users, UsersRole
@@ -262,14 +267,40 @@ def update_api_user():
         return jsonify({'error': 'Internal server error!'}), 500
 
 
+# --- jwt api user login ---
+@api.route("/login_api_user", methods=['POST'])
+def login_api_user():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({'error': 'Username or Password required'}), 400
+
+    user = Users.query.filter(Users.username == username).first()
+    if user.type != 'API':
+        return jsonify({"error": "Invalid username type, please try again!"}), 400
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.username)
+        return (
+            jsonify(
+                {
+                    "message": "API user logged-in successfully!",
+                    "tokens": {"access": access_token},
+                }
+            ),
+            200,
+        )
+    return jsonify({"error": "Invalid username or password"}), 400
+
 # --- postman api for api user role, roles-api's data & authentication functionality ---
 @api.route('/users_roles_apis_data', methods=['GET'])
+@jwt_required()
 def users_roles_apis_data():
-    user_id = 2
-    username = 'ayon_api'
+    username = get_jwt_identity()  
     try:
-        user = Users.query.filter_by(id=user_id, username=username).first()
-
+        user = Users.query.filter_by(username=username).first()
         if not user:
             return jsonify({'error': 'User not found!'}), 404
 

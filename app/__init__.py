@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 
 app = Flask(__name__)
@@ -16,6 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize extensions
 db = SQLAlchemy(app)
 # db.init_app(app)
+
+jwt = JWTManager(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
