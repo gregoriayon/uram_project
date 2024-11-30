@@ -79,7 +79,7 @@ function get_all_api_list() {
 
 
 function deleteAPI(api_id) {
-    if (confirm('Are you sure you want to delete this role?')) {
+    if (confirm('Are you sure you want to delete this api?')) {
         $.ajax({
             url: `api/delete_api?api_id=${api_id}`,
             type: 'DELETE',
@@ -120,8 +120,7 @@ function setUpdateAPI(api_id){
             $('#update_api_details').val(res.details);
         })
         .fail(function (error) {
-            // show_error_message(error.responseJSON.error)
-            console.log(error);
+            show_error_message(error.responseJSON.error)
         });
 }
 

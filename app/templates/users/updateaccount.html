@@ -1,23 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Create User Account{% endblock %}
+{% block title %}Update User Account{% endblock %}
 
 {% block content %}
 <div class="m-2">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ms-2 pt-2 pb-3">
-        <h4 >Create User Account</h4>
+        <h4 >Update User Account</h4>
     </div>
 
     <div class="container-fluid border border-1 rounded-1 p-4">
         <form>
             <div class="row">
                 <div class="form-group col-lg-6">
-                    <label for="user_username" class="text-muted mb-1">Username</label>
-                    <input type="text" class="form-control" id="user_username" placeholder="Username">
+                    <label for="up_user_username" class="text-muted mb-1">Username</label>
+                    <input type="text" class="form-control" id="up_user_username" placeholder="Username">
                 </div>
                 <div class="form-group col-lg-6">
-                    <label for="userType" class="text-muted mb-1">User Type</label>
-                    <select class="form-control" id="userType">
+                    <label for="up_userType" class="text-muted mb-1">User Type</label>
+                    <select class="form-control" id="up_userType">
                         <option value="">Select Type</option>
                         <option value="Admin" {% if current_user.type == 'Admin' %} disabled {% endif %}>Admin</option>
                         <option value="API">API</option>
@@ -25,42 +25,31 @@
                 </div>
             </div>
 
-            <div class="row mt-2">
-                <div class="form-group col-lg-6">
-                    <label for="user_password" class="text-muted mb-1">Password</label>
-                    <input type="password" class="form-control" id="user_password" placeholder="Password">
-                </div>
-                <div class="form-group col-lg-6">
-                    <label for="user_confirmPassword" class="text-muted mb-1">Confirm Password</label>
-                    <input type="password" class="form-control" id="user_confirmPassword" placeholder="Confirm Password">
-                </div>
-            </div>
-
             <div class="form-group mt-2">
-                <label for="ac_role_name" class="text-muted mb-1">Roles</label>
-                <select class="js-example-basic-multiple form-control" id="ac_role_name" name="user_roles[]" multiple="multiple">
+                <label for="up_role_name" class="text-muted mb-1">Roles</label>
+                <select class="js-example-basic-multiple form-control" id="up_role_name" name="user_roles[]" multiple="multiple">
                     <!-- option will ad by js -->
                 </select>
             </div>
 
             <div class="row mt-2">
                 <div class="form-group col-lg-6">
-                    <label for="user_email" class="text-muted mb-1">Email <span class="text-secondary">(optional)</span></label>
-                    <input type="email" class="form-control" id="user_email" placeholder="Email">
+                    <label for="up_user_email" class="text-muted mb-1">Email <span class="text-secondary">(optional)</span></label>
+                    <input type="email" class="form-control" id="up_user_email" placeholder="Email">
                 </div>
                 <div class="form-group col-lg-6">
-                    <label for="user_phone" class="text-muted mb-1">Phone <span class="text-secondary">(optional)</span></label>
-                    <input type="text" class="form-control" id="user_phone" placeholder="Phone">
+                    <label for="up_user_phone" class="text-muted mb-1">Phone <span class="text-secondary">(optional)</span></label>
+                    <input type="text" class="form-control" id="up_user_phone" placeholder="Phone">
                 </div>
             </div>
             
             <div class="form-group mt-2">
-              <label for="user_details" class="text-muted mb-1">Details <span class="text-secondary">(optional)</span></label>
-              <textarea class="form-control" id="user_details" rows="3" placeholder="Details"></textarea>
+              <label for="up_user_details" class="text-muted mb-1">Details <span class="text-secondary">(optional)</span></label>
+              <textarea class="form-control" id="up_user_details" rows="3" placeholder="Details"></textarea>
             </div>
 
             <div class="d-flex justify-content-end mt-2">
-                <button type="button" class="btn btn-success" onclick="create_api_user()"><i class="fa-solid fa-plus text-sm"></i> Create</button>
+                <button type="button" class="btn btn-success" onclick="updateAPIUser()"><i class="fa-solid fa-up-right-from-square text-sm"></i> Update</button>
             </div>
         </form>
     </div>
@@ -69,5 +58,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src=""></script>
+    <script src="../../static/js/updateac.js"></script>
 {% endblock %}

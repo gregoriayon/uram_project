@@ -172,6 +172,95 @@ def delete_api_user():
         return jsonify({'error': 'Internal server error!'}), 500
 
 
+@api.route('/update_api_user', methods=['GET', 'POST'])
+@login_required
+def update_api_user():
+    user_id = request.args.get('user_id', None)
+    if not user_id:
+        return jsonify({'error': 'User ID is required!'}), 400
+
+    try:
+        user = Users.query.get(user_id)
+        if not user:
+            return jsonify({'error': 'User not found!'}), 404
+
+        if request.method == 'GET':
+            user_roles = UsersRole.query.filter_by(user_id=user.id).all()
+            roles = [{'role_id': ur.role_id, 'role_name': ur.role_name} for ur in user_roles]
+
+            response_data = {
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'type': user.type,
+                    'email': user.email,
+                    'phone': user.phone,
+                    'details': user.details
+                },
+                'roles': roles
+            }
+            return jsonify(response_data), 200
+
+        if request.method == 'POST':
+            # Parse and validate incoming data
+            data = request.get_json()
+            username = data.get('username', None)
+            user_type = data.get('user_type', None)
+            email = data.get('email', None)
+            phone = data.get('phone', None)
+            details = data.get('details', None)
+            roles = data.get('roles', [])
+
+            if not username or not user_type or not roles:
+                return jsonify({'error': 'Username, type, and roles are required fields.'}), 406
+
+            if Users.query.filter(Users.username == username, Users.id != user_id).first():
+                return jsonify({'error': 'Username already exists for another user'}), 406
+
+            # Resolve role names to IDs if necessary
+            if isinstance(roles[0], str):  # If roles are names
+                resolved_roles = Roles.query.filter(Roles.role_name.in_(roles)).all()
+                if len(resolved_roles) != len(roles):
+                    return jsonify({'error': 'One or more roles are invalid.'}), 400
+                roles = [role.id for role in resolved_roles]
+
+            # Update the Users table
+            user.username = username
+            user.type = user_type
+            user.email = email
+            user.phone = phone
+            user.details = details
+            user.updated_at = datetime.now(timezone.utc)
+
+            # Update the UsersRole table
+            existing_roles = {ur.role_id for ur in UsersRole.query.filter_by(user_id=user.id).all()}
+            new_roles = set(roles)
+
+            # Add new roles
+            for role_id in new_roles - existing_roles:
+                role = Roles.query.get(role_id)
+                if role:
+                    new_user_role = UsersRole(
+                        user_id=user.id,
+                        role_id=role.id,
+                        username=user.username,
+                        role_name=role.role_name,
+                        created_at=datetime.now(timezone.utc)
+                    )
+                    db.session.add(new_user_role)
+
+            # Remove old roles
+            for role_id in existing_roles - new_roles:
+                UsersRole.query.filter_by(user_id=user.id, role_id=role_id).delete()
+
+            db.session.commit()
+            return jsonify({'success': 'API User updated successfully!'}), 200
+
+    except Exception as ex:
+        print("Error: ", str(ex))
+        db.session.rollback()
+        return jsonify({'error': 'Internal server error!'}), 500
+
 
 # --- postman api for api user role, roles-api's data & authentication functionality ---
 @api.route('/users_roles_apis_data', methods=['GET'])
