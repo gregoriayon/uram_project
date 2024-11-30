@@ -206,9 +206,9 @@ def update_api_user():
             data = request.get_json()
             username = data.get('username', None)
             user_type = data.get('user_type', None)
-            email = data.get('email', None)
-            phone = data.get('phone', None)
-            details = data.get('details', None)
+            email = data.get('email', '').strip()  
+            phone = data.get('phone', '').strip()  
+            details = data.get('details', '').strip()  
             roles = data.get('roles', [])
 
             if not username or not user_type or not roles:
@@ -227,9 +227,9 @@ def update_api_user():
             # Update the Users table
             user.username = username
             user.type = user_type
-            user.email = email
-            user.phone = phone
-            user.details = details
+            user.email = email if email else user.email
+            user.phone = phone if phone else user.phone
+            user.details = details if details else user.details
             user.updated_at = datetime.now(timezone.utc)
 
             # Update the UsersRole table
@@ -265,8 +265,8 @@ def update_api_user():
 # --- postman api for api user role, roles-api's data & authentication functionality ---
 @api.route('/users_roles_apis_data', methods=['GET'])
 def users_roles_apis_data():
-    user_id = 14
-    username = 'gregory_api'
+    user_id = 2
+    username = 'ayon_api'
     try:
         user = Users.query.filter_by(id=user_id, username=username).first()
 
@@ -306,7 +306,7 @@ def users_roles_apis_data():
                 "user_type": user.type,
             },
             "user_roles": role_names,
-            "user_role_apis": api_data,
+            "user_roles_apis": api_data,
         }
         return jsonify(response_data), 200
     except Exception as ex:
